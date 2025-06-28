@@ -84,6 +84,7 @@ async def get_user_in_crm(message: types.Message, state: FSMContext):
 
             else:
                 await message.answer(bot_text.status_complited(res_data.get('id')))
+        await message.answer(bot_text.last_text)
     elif res_data.get('type') == 'graduate':
         await message.answer(bot_text.graduate_text(), reply_markup=inlines.yes_or_no)
     else:
