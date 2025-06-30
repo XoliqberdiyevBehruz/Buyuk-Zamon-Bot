@@ -91,7 +91,7 @@ async def get_user_in_crm(message: types.Message, state: FSMContext):
         await message.answer(bot_text.register_failed)
 
 
-@router.message(F.text == "chat_id")
+@router.message(filters.Command("chat_id"))
 async def get_chat_id(message: types.Message):
     if message.chat.type in ["group", 'supergroup']:
         create_telegram_group.delay(message.chat.title, message.chat.id)
