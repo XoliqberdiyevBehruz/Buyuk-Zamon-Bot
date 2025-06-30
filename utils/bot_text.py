@@ -8,12 +8,8 @@ Ushbu bot sizning ma'lumotlaringizni qayta ishlash uchun xizmat qiladi. Iltimos,
 """ 
 
 register_failed = """
-Agar bunaqa ma'lumot CRM da bo'lmasa:
-
 ❗️ Afsuski, sizning ma'lumotlaringiz hozircha tizimda topilmadi.
-
 Bu holat odatda siz hali ro‘yxatga olinmagan bo‘lsangiz yuz beradi. Iltimos, biroz kuting. Sizning ma’lumotlaringiz tez orada tizimga kiritiladi. Bu jarayon odatda bir necha daqiqa yoki soat davom etadi.
-
 Keyinchalik botga qayta kirib urinib ko‘ring. ⏳
 """
 
@@ -58,6 +54,8 @@ def graduate_text():
         return  f"""
         Biznes universitet {res.json().get('name')} {res.json().get('start_date')} shu sanadan boshlanadi online qatnashishni istaysizmi?
         """
+    return None
+
 
 callback_no = """
 Botdagi xabarlarni kuzatib boring, muhim habarlarni shu bot orqali olishingiz mumkin
