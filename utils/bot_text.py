@@ -14,7 +14,7 @@ Keyinchalik botga qayta kirib urinib ko‘ring. ⏳
 """
 
 def status_not_complited(user_id):
-    response = requests.get(f'https://buyuk.zamon.repid.uz/api/v1/bot/bot/student_group_info/{user_id}/')
+    response = requests.get(f'https://buyuk.zamon.repid.uz/api/v1/bot/bot/student_group_info/')
     if response.status_code == 200:
         return f"""
         Bonus darslardan foydalanish imkoniyatini qoʻldan boy bermang!
@@ -27,7 +27,7 @@ def status_not_complited(user_id):
         """
 
 def status_complited(user_id):
-    response = requests.get(f'https://buyuk.zamon.repid.uz/api/v1/bot/bot/student_group_info/{user_id}/')
+    response = requests.get(f'https://buyuk.zamon.repid.uz/api/v1/bot/bot/student_group_info/')
     if response.status_code ==200:
         return f"""
             Biznes Universitetining “{response.json().get('name')}” guruhiga qo‘shilganingiz bilan tabriklaymiz!
