@@ -41,3 +41,11 @@ def get_telegram_ids():
         return response.json()
     else:
         return response
+
+def get_user_by_tg_id(tg_id: int):
+    url = f"https://buyuk.zamon.repid.uz/api/v1/bot/bot/student/get_by_tg_id/{tg_id}/"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return response

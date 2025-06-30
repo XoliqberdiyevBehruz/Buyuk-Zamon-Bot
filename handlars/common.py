@@ -20,10 +20,8 @@ class Register(StatesGroup):
 
 
 @router.callback_query(F.data == "ha")
-async def remove_keyboard(callback: types.CallbackQuery, state: FSMContext):
-    data = await state.get_data()
-    res_data = request.get_user(data.get('phone'), data.get('full_name'), data.get('contract_number'))
-
+async def remove_keyboard(callback: types.CallbackQuery):
+    res_data = request.get_user_by_tg_id(callback.message.from_user.id)
     await callback.message.answer(request.create_invite_link(config.BOT_TOKEN, config.CHANNEL_ID, callback.message.from_user.id))
     set_student_to_tg_group.delay(config.CHANNEL_ID, res_data.get('id'))
     await callback.answer()
