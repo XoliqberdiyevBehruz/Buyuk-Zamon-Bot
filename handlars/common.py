@@ -8,7 +8,7 @@ import utils.bot_text as bot_text
 from utils import request, utils
 from keyboards import reply, inlines
 from main import bot
-from tasks import update_user, change_user_group_joined, create_telegram_group, set_student_to_tg_group
+from tasks import update_user, change_user_group_joined, create_telegram_group, set_student_to_tg_group, create_student_message
 
 router = Router()
 
@@ -17,6 +17,11 @@ class Register(StatesGroup):
     phone = State()
     full_name = State()
     contract_number = State()
+
+
+class SendAdmin(StatesGroup):
+    waiting_for_message = State()
+
 
 
 @router.callback_query(F.data == "ha")
@@ -58,6 +63,7 @@ async def get_contract_number(message: types.Message, state: FSMContext):
 async def get_user_in_crm(message: types.Message, state: FSMContext):
     await state.update_data(contract_number=message.text)
     data = await state.get_data()
+    await state.clear()
     res_data = request.get_user(data.get('phone'), data.get('full_name'), data.get('contract_number'))
     if "type" in res_data and res_data.get('type') != "graduate":
         update_user.delay(
@@ -96,3 +102,16 @@ async def get_chat_id(message: types.Message):
     if message.chat.type in ["group", 'supergroup']:
         create_telegram_group.delay(message.chat.title, message.chat.id)
         await message.delete()
+
+
+@router.message(filters.Command("help"))
+async def ask_for_admin_message(message: types.Message, state: FSMContext):
+    await message.reply("Admin uchun xabaringizni yozing:")
+    await state.set_state(SendAdmin.waiting_for_message)
+
+
+@router.message(SendAdmin.waiting_for_message)
+async def forward_to_admin(message: types.Message, state: FSMContext):
+    res = create_student_message.delay(message.from_user.id, message.text)
+    await message.reply("Xabaringiz adminga yuborildi. Tez orada javob olasiz.")
+    await state.clear()

@@ -62,3 +62,17 @@ def set_student_to_tg_group(group_id, user_id):
         return True
     else:
         return False
+    
+@app.task
+def create_student_message(tg_id, message):
+    response = requests.post(
+        f'https://buyuk.zamon.repid.uz/api/v1/bot/bot/message/create/',
+        data={
+            'message': message,
+            'telegram_id': tg_id
+        }
+    )
+    print(response)
+    if response.status_code == 200:
+        return True
+    return False
